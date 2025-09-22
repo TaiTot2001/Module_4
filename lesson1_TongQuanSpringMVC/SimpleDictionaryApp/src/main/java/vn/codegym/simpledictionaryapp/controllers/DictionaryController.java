@@ -31,15 +31,15 @@ public class DictionaryController {
 
     // Xử lý tra cứu từ
     @PostMapping("/translate")
-    public String translate(@RequestParam("w") String word3, Model model) {
-        String result = dictionary.get(word3.toLowerCase());
+    public String translate(@RequestParam("w") String word, Model model) {
+        String result = dictionary.get(word.toLowerCase());
 
 
         if (result != null) {
-            model.addAttribute("wr", word3);
+            model.addAttribute("wr", word);
             model.addAttribute("r", result);
         } else {
-            model.addAttribute("wr", word3);
+            model.addAttribute("wr", word);
             model.addAttribute("r", "Không tìm thấy nghĩa cho từ này!");
         }
 
