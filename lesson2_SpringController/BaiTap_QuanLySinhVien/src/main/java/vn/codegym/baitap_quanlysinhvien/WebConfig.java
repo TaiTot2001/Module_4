@@ -10,7 +10,7 @@ import org.springframework.web.servlet.view.InternalResourceViewResolver;
 // webconfig thay thế cho dispatcher_servlet
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "vn.codegym.baitap_quanlysinhvien.controllers")//load beans --> controllers là các object(beans)
+@ComponentScan(basePackages = "vn.codegym.baitap_quanlysinhvien")//load beans --> controllers là các object(beans)
 public class WebConfig implements WebMvcConfigurer {
 
     // beans dành cho view resolver

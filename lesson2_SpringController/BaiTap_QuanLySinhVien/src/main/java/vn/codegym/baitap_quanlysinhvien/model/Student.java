@@ -37,4 +37,11 @@ public class Student {
     public void setScore(float score) {
         this.score = score;
     }
+
+    public String getRank() {
+        if (score >= 8) return "Giỏi";
+        if (score >= 6.5) return "Khá";
+        if (score >= 5) return "Trung bình";
+        return "Yếu";
+    }
 }

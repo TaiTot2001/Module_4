@@ -26,6 +26,8 @@ dependencies {
   implementation("org.springframework:spring-webmvc:6.1.8")
   implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api:3.0.0'
   implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl:3.0.1'
+  implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.28'
+
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
