@@ -66,6 +66,7 @@ public class StudentDAO {
             e.printStackTrace();
         }
     }
+
     //Tìm theo id
     public Student findById(String id) {
         String sql = "SELECT id, name, score FROM students WHERE id = ?";
@@ -84,5 +85,29 @@ public class StudentDAO {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void update(Student student) {
+        String sql = "UPDATE students SET name = ?, score = ? WHERE id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, student.getName());
+            ps.setFloat(2, student.getScore());
+            ps.setString(3, student.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(String id) {
+        String sql = "DELETE FROM students WHERE id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, id);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

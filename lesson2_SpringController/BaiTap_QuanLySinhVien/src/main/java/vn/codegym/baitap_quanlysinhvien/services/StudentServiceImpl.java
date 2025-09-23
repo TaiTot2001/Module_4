@@ -65,4 +65,16 @@ public class StudentServiceImpl implements StudentService {
     public Student findById(String id) {
         return studentDAO.findById(id);
     }
+
+    @Override
+    public void update(Student student) {
+        studentDAO.update(student);
+    }
+
+    @Override
+    public void delete(String id) {
+        studentDAO.delete(id);
+    }
+
+
 }

@@ -41,28 +41,47 @@
     <div class="col-auto">
         <button type="submit" class="btn btn-primary">Lọc</button>
     </div>
+    <div class="col-auto ms-auto">
+        <a href="${pageContext.request.contextPath}/students/add" class="btn btn-success">➕ Thêm sinh viên</a>
+    </div>
 </form>
 
-<table class="table table-bordered table-striped">
+<table class="table table-bordered table-striped align-middle ">
+    <colgroup>
+        <col style="width: 10%;">
+        <col style="width: 35%;">
+        <col style="width: 15%;">
+        <col style="width: 15%;">
+        <col style="width: 25%;">
+    </colgroup>
     <thead>
     <tr>
-        <th>Mã số</th>
-        <th>Họ tên</th>
-        <th>Điểm</th>
-        <th>Thứ hạng</th>
-        <th>Chức năng</th>
+        <th class="text-center">Mã số</th>
+        <th class="text-center">Họ tên</th>
+        <th class="text-center">Điểm</th>
+        <th class="text-center">Thứ hạng</th>
+        <th class="text-center">Chức năng</th>
     </tr>
     </thead>
     <tbody>
     <c:forEach var="s" items="${students}">
         <tr>
-            <td><c:out value="${s.id}"/></td>
-            <td><c:out value="${s.name}"/></td>
-            <td><c:out value="${s.score}"/></td>
-            <td><c:out value="${s.rank}"/></td>
-            <td>
+            <td class="text-center"><c:out value="${s.id}"/></td>
+            <td class="text-center align-middle"><c:out value="${s.name}"/></td>
+            <td class="text-center"><c:out value="${s.score}"/></td>
+            <td class="text-center"><c:out value="${s.rank}"/></td>
+            <td class="text-center">
                 <a href="students/detail?id=${s.id}" class="btn btn-info btn-sm">
                     Chi tiết
+                </a>
+
+                <a href="students/edit?id=${s.id}" class="btn btn-warning btn-sm">
+                    Sửa
+                </a>
+
+                <a href="students/delete?id=${s.id}" class="btn btn-danger btn-sm"
+                   onclick="return confirm('Bạn có chắc muốn xoá sinh viên ${student.name}?');">
+                    Xóa
                 </a>
             </td>
         </tr>
@@ -77,13 +96,16 @@
             <c:choose>
                 <c:when test="${p == page}">
                     <li class="page-item active">
-                        <span class="page-link"><c:out value="${p}"/></span>
+                        <span class="page-link">
+                            <c:out value="${p}"/>
+                        </span>
                     </li>
                 </c:when>
                 <c:otherwise>
                     <li class="page-item">
                         <a class="page-link"
-                           href="?q=${q}&sort=${sort}&dir=${dir}&size=${size}<c:if test='${p != 1}'>&page=${p}</c:if>">
+                           href="?q=${q}&sort=${sort}&dir=${dir}&size=${size}
+                            <c:if test='${p != 1}'>&page=${p}</c:if>">
                             <c:out value="${p}"/>
                         </a>
                     </li>
@@ -92,8 +114,6 @@
         </c:forEach>
     </ul>
 </nav>
-
-<a href="${pageContext.request.contextPath}/students/add" class="btn btn-success">➕ Thêm sinh viên</a>
 
 </body>
 </html>

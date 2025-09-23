@@ -18,12 +18,9 @@ public class StudentController {
 
     private final StudentService studentService;
 
-    // Spring sẽ inject StudentService từ @Bean AppConfig
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
-
-
 
     @GetMapping("/students")
     public ModelAndView getStudents(
@@ -34,9 +31,9 @@ public class StudentController {
             @RequestParam(value = "size", defaultValue = "10") int size
     ) {
         // 1. Lấy toàn bộ sinh viên
-        List<Student> allStudents = studentService.findAll(q, sort, dir, page, size);
+        List<Student> allStudents = studentService.findAll(q, sort, dir, 1, Integer.MAX_VALUE);
 
-        // 2. Tìm kiếm (lọc theo q)
+        // 2. Tìm kiếm
         if (q != null && !q.isEmpty()) {
             String keyword = q.toLowerCase();
             List<Student> filtered = new ArrayList<>();
@@ -52,9 +49,15 @@ public class StudentController {
         // 3. Sắp xếp
         Comparator<Student> comparator;
         switch (sort) {
-            case "name": comparator = Comparator.comparing(Student::getName); break;
-            case "score": comparator = Comparator.comparing(Student::getScore); break;
-            default: comparator = Comparator.comparing(Student::getId); break;
+            case "name":
+                comparator = Comparator.comparing(Student::getName);
+                break;
+            case "score":
+                comparator = Comparator.comparing(Student::getScore);
+                break;
+            default:
+                comparator = Comparator.comparing(Student::getId);
+                break;
         }
         if ("desc".equals(dir)) {
             comparator = comparator.reversed();
@@ -72,6 +75,7 @@ public class StudentController {
         if (fromIndex < toIndex) { // tránh lỗi IndexOutOfBounds
             students = allStudents.subList(fromIndex, toIndex);
         }
+
 
         // 6. Trả dữ liệu ra view
         ModelAndView modelAndView = new ModelAndView("students");
@@ -100,12 +104,129 @@ public class StudentController {
         return mav;
     }
 
+    @GetMapping("/students/edit")
+    public ModelAndView getStudentEdit(@RequestParam("id") String id) {
+        Student student = studentService.findById(id);
+        ModelAndView mav = new ModelAndView("student-edit");
+        mav.addObject("student", student);
+        return mav;
+    }
+
+    @GetMapping("/students/delete")
+    public String deleteStudent(@RequestParam("id") String id,
+                                RedirectAttributes redirectAttributes) {
+        studentService.delete(id);
+        redirectAttributes.addFlashAttribute("message", "Đã xoá sinh viên " + id);
+        return "redirect:/students";
+    }
+
     @PostMapping("/students/add")
     public String addStudent(@RequestParam("id") String id,
                              @RequestParam("name") String name,
-                             @RequestParam("score") float score, RedirectAttributes redirectAttributes) {
-        studentService.save(new Student(id, name, score));
+                             @RequestParam("score") String scoreStr,
+                             RedirectAttributes redirectAttributes) {
+
+        boolean hasError = false;
+
+        // --- Validate ID ---
+        if (id == null || id.trim().isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorId", "Mã số không được để trống");
+            hasError = true;
+        } else if (id.length() < 3 || id.length() > 20) {
+            redirectAttributes.addFlashAttribute("errorId", "Mã số phải từ 3–20 ký tự");
+            hasError = true;
+        } else if (studentService.findById(id) != null) {
+            redirectAttributes.addFlashAttribute("errorId", "Mã số đã tồn tại");
+            hasError = true;
+        }
+
+        if (name == null || name.trim().isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorName", "Tên không được để trống");
+            hasError = true;
+        } else {
+            // Chuẩn hoá tên
+            name = name.trim().replaceAll("\\s+", " ");
+            if (!name.matches("^[\\p{L}\\s]+$")) {
+                redirectAttributes.addFlashAttribute("errorName", "Tên chỉ được chứa chữ cái");
+                hasError = true;
+            }
+        }
+
+        float score = -1;
+        try {
+            score = Float.parseFloat(scoreStr);
+            if (score < 0.0 || score > 10.0) {
+                redirectAttributes.addFlashAttribute("errorScore", "Điểm phải trong khoảng 0–10");
+                hasError = true;
+            }
+        } catch (NumberFormatException e) {
+            redirectAttributes.addFlashAttribute("errorScore", "Điểm phải là số hợp lệ");
+            hasError = true;
+        }
+
+        if (hasError) {
+            redirectAttributes.addFlashAttribute("id", id);
+            redirectAttributes.addFlashAttribute("name", name);
+            redirectAttributes.addFlashAttribute("score", scoreStr);
+            return "redirect:/students/add";
+        }
+
+        studentService.save(new Student(id, name.trim(), score));
         redirectAttributes.addFlashAttribute("message", "Bạn đã thêm sinh viên mới thành công");
+        return "redirect:/students";
+    }
+
+    @PostMapping("/students/edit")
+    public String updateStudent(@RequestParam("id") String id,
+                                @RequestParam("name") String name,
+                                @RequestParam("score") String scoreStr,
+                                RedirectAttributes redirectAttributes) {
+
+        boolean hasError = false;
+
+        // --- Validate Name ---
+        if (name == null || name.trim().isEmpty()) {
+            redirectAttributes.addFlashAttribute("errorName", "Tên không được để trống");
+            hasError = true;
+        } else {
+            name = name.trim().replaceAll("\\s+", " ");
+            if (!name.matches("^[\\p{L}\\s]+$")) {
+                redirectAttributes.addFlashAttribute("errorName", "Tên chỉ được chứa chữ cái");
+                hasError = true;
+            }
+        }
+
+        // --- Validate Score ---
+        float score = -1;
+        try {
+            score = Float.parseFloat(scoreStr);
+            if (score < 0.0 || score > 10.0) {
+                redirectAttributes.addFlashAttribute("errorScore", "Điểm phải trong khoảng 0–10");
+                hasError = true;
+            }
+        } catch (NumberFormatException e) {
+            redirectAttributes.addFlashAttribute("errorScore", "Điểm phải là số hợp lệ");
+            hasError = true;
+        }
+
+        // Nếu có lỗi → quay lại form sửa
+        if (hasError) {
+            redirectAttributes.addFlashAttribute("name", name);
+            redirectAttributes.addFlashAttribute("score", scoreStr);
+            return "redirect:/students/edit?id=" + id;
+        }
+
+        // Nếu hợp lệ → update
+        Student student = new Student(id, name, score);
+        studentService.update(student);
+
+        redirectAttributes.addFlashAttribute("message", "Cập nhật sinh viên thành công");
+        return "redirect:/students";
+    }
+
+    @PostMapping
+    public String deleteStudent(@RequestParam("id") String id) {
+        studentService.delete(id);
         return "redirect:/students";
     }
 }
