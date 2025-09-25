@@ -1,4 +1,4 @@
-package vn.codegym.baitap_quanlysinhvien;
+package vn.codegym.spicedisplayapplication;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -11,7 +11,7 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
 
     @Override
     protected Class<?>[] getServletConfigClasses() {//nơi khai báo beans dành cho web layer(controller,view,...)
-        return new Class<?>[]{WebConfig.class, ThymeleafConfig.class};
+        return new Class<?>[]{WebConfig.class};
     }
 
     @Override
