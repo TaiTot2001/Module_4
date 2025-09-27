@@ -1,0 +1,20 @@
+<!--lesson 4 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="" method="post" th:object="${student}">
+  Mã sinh viên: <input type="text" th:field="*{code}"/>
+  <span th:if="${#fields.hasErrors('code')}" th:errors="*{code}" class="error"></span>
+  <br/>
+
+  Tên sinh viên: <input type="text" th:field="*{name}"/>
+  <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></span>
+  <br/>
+  <button type="submit">Add</button>
+</form>
+</body>
+</html>

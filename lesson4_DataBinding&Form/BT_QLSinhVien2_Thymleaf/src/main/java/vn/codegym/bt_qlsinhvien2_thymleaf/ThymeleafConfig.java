@@ -1,4 +1,4 @@
-package vn.codegym.baitap_quanlysinhvien;
+package vn.codegym.bt_qlsinhvien2_thymleaf;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -39,7 +39,7 @@ public class ThymeleafConfig {
 
         viewResolver.setCharacterEncoding("UTF-8");
         viewResolver.setOrder(1);
-        viewResolver.setViewNames(new String[]{"*.html"}); // tìm .html --> Views
+        viewResolver.setViewNames(new String[]{"*"}); // tìm .html --> Views
         return viewResolver;
     }
 }
