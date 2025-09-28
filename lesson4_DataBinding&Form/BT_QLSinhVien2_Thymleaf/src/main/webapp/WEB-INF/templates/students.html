@@ -60,7 +60,6 @@
     </tr>
     </thead>
     <tbody>
-    <!-- Nếu controller trả List<Student> thì dùng ${students}, nếu Page<Student> thì dùng ${students.content} -->
     <tr th:each="s : ${students}">
         <td class="text-center" th:text="${s.id}"></td>
         <td class="text-center align-middle" th:text="${s.name}"></td>
