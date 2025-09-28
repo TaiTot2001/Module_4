@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="/layout :: head">
+    <title>ListProduct</title>
+</head>
+<body>
+<h3>Products</h3>
+
+<form th:action="@{/products/create}" method="get" style="margin-bottom: 15px;">
+    <input type="submit" value="+Add new product" style="width: auto; background-color: darkgreen"/>
+</form>
+
+<div class="notify">
+    <div th:if="${success}">
+        <span th:text="${success}"></span>
+    </div>
+</div>
+
+<form th:action="@{/products/search}" method="get" style="margin-bottom: 15px;">
+    <input type="text" name="keyword" placeholder="Nhập tên sản phẩm..."
+           th:value="${keyword}" style="padding: 6px; width: 350px;"/>
+    <input type="submit" value="Tìm kiếm"
+           style="padding: 6px 12px; margin-left: 5px;width: 100px; background-color: slategrey"/>
+</form>
+
+<table id="products">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Giá</th>
+        <th>Mô Tả</th>
+        <th>Nhà Sản Xuất</th>
+        <th>Edit</th>
+        <th>Delete</th>
+        <th>View</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="row,rowStat : ${products}">
+        <td th:text="${row.getName()}"></td>
+        <td th:text="${row.getPrice()}"></td>
+        <td th:text="${row.getDescription()}"></td>
+        <td th:text="${row.getManufacturer()}"></td>
+        <td><a th:href="@{/products/{id}/edit(id=${row.getId()})}">edit</a></td>
+        <td><a th:href="@{/products/{id}/delete(id=${row.getId()})}">delete</a></td>
+        <td><a th:href="@{/products/{id}/view(id=${row.getId()})}">view</a></td>
+    </tr>
+    </tbody>
+</table>
+<footer th:replace="/layout :: footer"></footer>
+</body>
+</html>
