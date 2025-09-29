@@ -12,6 +12,7 @@ public class HomeController {
         model.addAttribute("title", "My Home");
         return "home";
     }
+
 }
 
 
