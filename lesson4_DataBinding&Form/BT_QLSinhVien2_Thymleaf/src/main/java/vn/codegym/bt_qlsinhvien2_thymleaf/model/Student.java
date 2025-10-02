@@ -1,9 +1,12 @@
 package vn.codegym.bt_qlsinhvien2_thymleaf.model;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-
+@Entity
+@Table(name ="students")
 public class Student {
 
+    @Id
     @NotBlank(message = "Mã số không được để trống")
     @Size(min = 3, max = 20, message = "Mã số phải từ 3–20 ký tự")
     private String id;

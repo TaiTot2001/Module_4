@@ -25,5 +25,6 @@ public class WebConfig implements WebMvcConfigurer {
 //        viewResolver.setContentType("text/html;charset=UTF-8");
 //        return viewResolver;
 //    }
-
+//@Bean
+//    public class WebConfig implements
 }
