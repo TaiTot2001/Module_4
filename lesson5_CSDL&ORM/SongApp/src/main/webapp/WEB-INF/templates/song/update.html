@@ -1,0 +1,57 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout::layout(~{::pageContent})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Cập nhật bài hát</title>
+</head>
+<body>
+<div th:fragment="pageContent">
+    <form method="post" th:action="@{/song/update}" th:object="${song}" enctype="multipart/form-data" class="mt-3">
+        <input type="hidden" th:field="*{filePath}" />
+        <input type="hidden" th:field="*{id}" class="form-control"/>
+        <div class="mb-3">
+            <label class="form-label">Tên bài hát:</label>
+            <input type="text" th:field="*{title}" class="form-control"/>
+            <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Nghệ sĩ:</label>
+            <input type="text" th:field="*{artist}" class="form-control" />
+            <span th:if="${#fields.hasErrors('artist')}" th:errors="*{artist}" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Thể loại:</label>
+            <input type="text" th:field="*{genre}" class="form-control"/>
+            <span th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}" class="text-danger small"></span>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">File hiện tại:</label>
+
+            <!-- Nếu có filePath -->
+            <div th:if="${song.filePath != null}">
+                <audio controls th:src="@{${song.filePath}}" class="d-block mb-2"></audio>
+                <p class="text-muted small">
+                    Đường dẫn: <span th:text="${song.filePath}"></span>
+                </p>
+            </div>
+
+            <!-- Nếu chưa có file -->
+            <div th:if="${song.filePath == null}" class="text-muted">
+                (Chưa có file nhạc)
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Chọn file mới (nếu muốn thay):</label>
+            <input type="file" name="uploadFile" class="form-control"/>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <a th:href="@{/song}" class="btn btn-secondary">Hủy</a></form>
+
+    </form>
+</div>
+</body>
+</html>

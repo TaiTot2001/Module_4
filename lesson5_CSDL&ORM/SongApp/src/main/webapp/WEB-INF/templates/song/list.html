@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout::layout(~{::pageContent})}">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách bài hát</title>
+</head>
+<body class="container mt-4">
+<div th:fragment="pageContent">
+
+    <table id="table" class="table table-bordered table-striped align-middle text-center">
+        <colgroup>
+            <col style="width: 20%;">
+            <col style="width: 15%;">
+            <col style="width: 7%;">
+            <col style="width: 20%;">
+            <col style="width: 19%;">
+            <col style="width: 19%;">
+        </colgroup>
+
+        <thead class="table-dark">
+        <tr>
+            <th>Tên bài hát</th>
+            <th>Nghệ sĩ</th>
+            <th>Thể loại</th>
+            <th>Đường dẫn file</th>
+            <th>Phát nhạc</th>
+            <th>Chức năng</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="song : ${songs}">
+            <td th:text="${song.title}"></td>
+            <td th:text="${song.artist}"></td>
+            <td th:text="${song.genre}"></td>
+
+            <!-- Hiển thị đường dẫn -->
+            <td>
+                <span th:text="${song.filePath}"></span>
+            </td>
+
+            <!-- Cột phát nhạc -->
+            <td>
+                <div th:if="${song.filePath != null}">
+                    <audio controls th:src="@{${song.filePath}}" style="width: 100%;"></audio>
+                </div>
+                <div th:if="${song.filePath == null}" class="text-muted small">
+                    (Chưa có file)
+                </div>
+            </td>
+
+            <!-- Cột chức năng -->
+            <td>
+                <a th:href="@{/song/detail/{id}(id=${song.id})}" class="btn btn-info btn-sm">Chi tiết</a>
+                <a th:href="@{/song/update/{id}(id=${song.id})}" class="btn btn-warning btn-sm">Sửa</a>
+
+                <form th:action="@{/song/delete/{id}(id=${song.id})}" method="post"
+                      style="display:inline"
+                      onsubmit="return confirm('Bạn có chắc muốn xóa bài hát này không?');">
+                    <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>
