@@ -7,11 +7,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import vn.codegym.songapp.config.WebConfig;
 import vn.codegym.songapp.models.Song;
-import vn.codegym.songapp.service.SongService;
+import vn.codegym.songapp.service.ISongService;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,7 +20,7 @@ import java.io.IOException;
 public class SongController {
 
     @Autowired
-    private SongService songService;
+    private ISongService songService;
 
     @GetMapping("")
     public String List(Model model, @ModelAttribute("message") String message) {
@@ -125,7 +124,7 @@ public class SongController {
     }
 
     @GetMapping("/detail/{id}")
-    public String detail(@PathVariable("id") Long id, Model model, RedirectAttributes redirectAttributes) {
+    public String detail(@PathVariable("id") Long id, Model model) {
         Song song = songService.getById(id);
         model.addAttribute("song", song);
         return "song/detail"; // Tên view

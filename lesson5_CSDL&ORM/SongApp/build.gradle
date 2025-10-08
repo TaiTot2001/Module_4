@@ -40,6 +40,9 @@ dependencies {
   implementation("org.hibernate.orm:hibernate-core:7.1.1.Final") // JPA provider
   // MySQL Driver
   implementation("mysql:mysql-connector-java:8.0.33")
+
+  // Spring Data JPA
+  implementation("org.springframework.data:spring-data-jpa:3.4.10")
   testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
   testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
 }
