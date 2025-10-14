@@ -2,6 +2,7 @@ package vn.codegym.songapp.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 @Entity
@@ -12,15 +13,27 @@ public class Song {
     private Long id;
 
     @NotBlank(message = "Tên bài hát không được trống")
-    @Size(max = 200)
+    @Size(max = 800)
+    @Pattern(
+            regexp = "^[\\p{L}\\p{N}\\s]+$",
+            message = "Tên bài hát không được chứa ký tự đặc biệt như @ ; , . = - + , …."
+    )
     private String title;
 
     @NotBlank(message = "Tên Nghệ sĩ không được trống")
-    @Size(max = 150)
+    @Size(max = 300)
+    @Pattern(
+            regexp = "^[\\p{L}\\p{N}\\s]+$",
+            message = "Tên bài hát không được chứa ký tự đặc biệt như @ ; , . = - + , …."
+    )
     private String artist;
 
     @NotBlank(message = "Tên thể loại không được trống")
-    @Size(max = 100)
+    @Size(max = 1000)
+    @Pattern(
+            regexp = "^[\\p{L}\\p{N}\\s,]+$",
+            message = "Ký tự đặc biệt chỉ được dùng dấu ,"
+    )
     private String genre;
 
     @Column(name = "file_path", nullable = false)
