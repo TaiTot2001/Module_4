@@ -1,0 +1,53 @@
+plugins {
+  id 'java'
+  id 'war'
+}
+
+group 'vn.codegym'
+version '1.0-SNAPSHOT'
+
+repositories {
+  mavenCentral()
+}
+
+ext {
+  junitVersion = '5.11.0'
+}
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
+
+tasks.withType(JavaCompile) {
+  options.encoding = 'UTF-8'
+}
+
+dependencies {
+  compileOnly('jakarta.servlet:jakarta.servlet-api:6.1.0')
+  // Spring MVC
+  implementation("org.springframework:spring-webmvc:6.2.6")
+  implementation 'org.springframework:spring-aspects:6.2.6'
+
+  // ThymeLeaf
+  implementation("org.thymeleaf:thymeleaf:3.1.2.RELEASE")
+  implementation("org.thymeleaf:thymeleaf-spring6:3.1.2.RELEASE")
+
+  // Data Binding + Validation
+  implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+  implementation("org.hibernate.validator:hibernate-validator:8.0.3.Final")
+  // EL (expression language)
+  // implementation("org.glassfish:jakarta.el:4.0.2")
+
+  // ORM
+  implementation("org.hibernate.orm:hibernate-core:7.1.1.Final") // JPA provider
+  // MySQL Driver
+  implementation("mysql:mysql-connector-java:8.0.33")
+
+  // Spring Data JPA
+  implementation("org.springframework.data:spring-data-jpa:3.4.10")
+
+  testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+}
+
+test {
+  useJUnitPlatform()}
