@@ -11,3 +11,5 @@ INSERT INTO customers (firstName, lastName) VALUES ('Truong', 'Quoc G');
 INSERT INTO customers (firstName, lastName) VALUES ('Do', 'Thi H');
 INSERT INTO customers (firstName, lastName) VALUES ('Bui', 'Van I');
 INSERT INTO customers (firstName, lastName) VALUES ('Dang', 'Thi K');
+
+select *from customers;

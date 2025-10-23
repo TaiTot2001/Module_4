@@ -1,2 +1,2 @@
-CREATE DATABASE orm_students;
+CREATE DATABASE orm_studentscustomers;
 use orm_students;
