@@ -21,7 +21,7 @@ public class LoginController {
 
 
     @PostMapping("/doLogin")
-    public ModelAndView login(@ModelAttribute User user) {
+    public ModelAndView login(@ModelAttribute("User") User user) {
         ModelAndView modelAndView = new ModelAndView("/dashboard");
         modelAndView.addObject("user", user);
         return modelAndView;
