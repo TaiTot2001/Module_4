@@ -37,7 +37,7 @@ public class UserController {
 
     /* ---------------- GET USER BY ID ------------------------ */
     @RequestMapping(value = "/users/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Object> getUserById(@PathVariable("id")Long id) {
+    public ResponseEntity<Object> getUserById(@PathVariable Long id) {
         UserDTO user = userService.findById(id);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.OK);
@@ -57,20 +57,24 @@ public class UserController {
 
     /* ---------------- DELETE USER ------------------------ */
     @RequestMapping(value = "/users/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<String> deleteUserById(@PathVariable("id") int id) {
+    public ResponseEntity<String> deleteUserById(@PathVariable("id") Long id) {
         userService.delete(id);
         return new ResponseEntity<>("Deleted!", HttpStatus.OK);
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody User user) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtService.generateTokenLogin(authentication);
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        User userInfo = userService.findByUsername(user.getUsername());
-        return ResponseEntity.ok(new JwtResponse(userInfo.getId(), jwt,
-                userInfo.getUsername(), userInfo.getUsername(), userDetails.getAuthorities()));
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = jwtService.generateTokenLogin(authentication);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            User userInfo = userService.findByUsername(user.getUsername());
+            return ResponseEntity.ok(new JwtResponse(userInfo.getId(), jwt,
+                    userInfo.getUsername(), userInfo.getUsername(), userDetails.getAuthorities()));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        }
     }
 }
