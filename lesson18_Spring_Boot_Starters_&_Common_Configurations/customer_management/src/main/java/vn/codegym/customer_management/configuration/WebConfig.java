@@ -6,6 +6,8 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import vn.codegym.customer_management.formatter.ProvinceFormatter;
+import vn.codegym.customer_management.service.ProvinceService;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {

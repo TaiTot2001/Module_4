@@ -14,7 +14,17 @@
   </style>
 </head>
 <body>
-There are <span th:text="${customers.size()}"></span> customer(s).
+<span th:if="${keyword}">
+  Search result for <code>"[[${keyword}]]"</code>, <a th:href="@{/customers}">click here to clear</a>.<br>
+</span>
+There are [[${customers.totalElements}]] customer(s).
+<form>
+  <label>
+    Search by name or email:
+    <input type="text" name="s">
+  </label>
+  <input type="submit" value="Search">
+</form>
 <table>
   <caption>Customers List</caption>
   <thead>
@@ -23,6 +33,7 @@ There are <span th:text="${customers.size()}"></span> customer(s).
     <th>Name</th>
     <th>Email</th>
     <th>Address</th>
+    <th>Province</th>
   </tr>
   </thead>
   <tbody>
@@ -33,8 +44,20 @@ There are <span th:text="${customers.size()}"></span> customer(s).
     </td>
     <td th:text="${c.email}"></td>
     <td th:text="${c.address}"></td>
+    <td th:text="${c.province?.name}"></td>
   </tr>
   </tbody>
 </table>
+<div>
+  <a th:if="${customers.hasPrevious()}"
+     th:href="@{'/customers'(page=${customers.number - 1}, size=${customers.size}, s=${keyword})}">
+    Previous
+  </a>
+  [[${customers.number + 1}]]/[[${customers.totalPages}]]
+  <a th:if="${customers.hasNext()}"
+     th:href="@{'/customers'(page=${customers.number + 1}, size=${customers.size}, s=${keyword})}">
+    Next
+  </a>
+</div>
 </body>
 </html>

@@ -1,13 +1,22 @@
 package vn.codegym.customer_management.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import vn.codegym.customer_management.model.Customer;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CustomerService {
     List<Customer> findAll();
 
-    Customer findOne(Long id);
+    Page<Customer> findAll(Pageable pageInfo);
+
+    List<Customer> search(String keyword);
+
+    Page<Customer> search(String keyword, Pageable pageInfo);
+
+    Optional<Customer> findOne(Long id) throws Exception;
 
     Customer save(Customer customer);
 
