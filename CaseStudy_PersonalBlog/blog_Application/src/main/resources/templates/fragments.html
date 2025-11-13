@@ -1,0 +1,72 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<body>-->
+
+<!--&lt;!&ndash; Header Fragment &ndash;&gt;-->
+<!--<div th:fragment="header">-->
+<!--    <header>-->
+<!--        <h1>-->
+<!--            <a th:href="@{/}" th:text="#{home.title}" style="color: inherit; text-decoration: none;">Personal Blog</a>-->
+<!--        </h1>-->
+<!--        <nav>-->
+<!--            <a th:href="@{/auth/login}" th:text="#{login.title}">Login</a>-->
+<!--            <a th:href="@{/auth/register}" th:text="#{register.title}">Register</a>-->
+<!--            <a th:href="@{/posts}">Posts</a>-->
+<!--        </nav>-->
+<!--    </header>-->
+<!--</div>-->
+
+<!--&lt;!&ndash; Footer Fragment &ndash;&gt;-->
+<!--<div th:fragment="footer">-->
+<!--    <footer>-->
+<!--        © 2025 Personal Blog — Designed by <a href="#">Tài Nguyễn</a>-->
+<!--    </footer>-->
+<!--</div>-->
+
+<!--</body>-->
+<!--</html>-->
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<body>
+
+<!-- Header Fragment -->
+<div th:fragment="header">
+    <header>
+        <h1>
+            <a th:href="@{/}" th:text="#{home.title}" style="color: inherit; text-decoration: none;">Personal Blog</a>
+        </h1>
+        <nav>
+            <!-- Nếu chưa đăng nhập -->
+            <span sec:authorize="isAnonymous()">
+                <a th:href="@{/auth/login}" th:text="#{login.title}">Login</a>
+                <a th:href="@{/auth/register}" th:text="#{register.title}">Register</a>
+            </span>
+
+            <!-- Nếu đã đăng nhập -->
+<!--            <span sec:authorize="isAuthenticated()">-->
+<!--                <a th:text="${#authentication.name}">Username</a>-->
+<!--                <a th:href="@{/logout}">Logout</a>-->
+<!--            </span>-->
+            <span sec:authorize="isAuthenticated()">
+                <a th:text="${#authentication.name}">Username</a>
+                <!-- Form logout POST trỏ đúng URL -->
+                <form th:action="@{/auth/logout}" method="post" style="display:inline;">
+                    <button type="submit" style="background:none; border:none; color:white; cursor:pointer; font-weight:500; margin-left:10px;">Logout</button>
+                </form>
+            </span>
+
+
+            <a th:href="@{/posts}">Posts</a>
+        </nav>
+    </header>
+</div>
+
+<!-- Footer Fragment -->
+<div th:fragment="footer">
+    <footer>
+        © 2025 Personal Blog — Designed by <a href="#">Tài Nguyễn</a>
+    </footer>
+</div>
+
+</body>
+</html>

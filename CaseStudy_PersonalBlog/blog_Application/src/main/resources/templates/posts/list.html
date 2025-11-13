@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{home.title}">Personal Blog</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: "Segoe UI", Roboto, sans-serif;
+            background: #f4f6f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            margin: 40px auto;
+        }
+
+        h2 {
+            text-align: center;
+            color: #1a1a1a;          /* Màu chữ tối, sang trọng */
+            font-size: 2em;           /* Kích thước nổi bật */
+            font-weight: 600;         /* Đậm vừa phải, chuyên nghiệp */
+            letter-spacing: 1px;      /* Khoảng cách chữ tinh tế */
+            margin: 40px 0 20px 0;    /* Khoảng cách trên/dưới hợp lý */
+            position: relative;
+        }
+
+        h2::after {
+            content: "";
+            display: block;
+            width: 280px;              /* Đường underline ngắn */
+            height: 3px;
+            background: linear-gradient(90deg, #4b6cb7, #182848); /* Gradient sang trọng */
+            margin: 10px auto 0;      /* Căn giữa đường underline */
+            border-radius: 2px;       /* Bo tròn nhẹ */
+        }
+
+        .create-btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background: #5563DE;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .create-btn:hover {
+            background: #4350c6;
+        }
+
+        .post-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-3px);
+        }
+
+        .post-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .post-author {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+
+        .post-content {
+            color: #555;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        .post-actions a {
+            color: #5563DE;
+            text-decoration: none;
+            margin-right: 10px;
+            font-weight: 500;
+        }
+
+        .post-actions a:hover {
+            text-decoration: underline;
+        }
+
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* đảm bảo chiếm toàn bộ màn hình */
+        }
+
+        main {
+            flex: 1; /* phần nội dung chính chiếm hết không gian còn lại */
+        }
+    </style>
+</head>
+<body>
+<div class="page-container">
+    <div th:replace="fragments :: header"></div>
+    <main>
+
+        <div class="container">
+
+
+            <h2 th:text="#{post.list}">Danh sách bài viết</h2>
+
+            <!-- Nút tạo bài viết -->
+            <a th:href="@{/posts/create}" class="create-btn" th:text="#{post.create}"></a>
+
+            <!-- Danh sách bài viết -->
+            <div th:each="p : ${posts}" class="post-card">
+                <div class="post-title" th:text="${p.title}"></div>
+                <div class="post-author">
+                    <span th:text="'bởi ' + ${p.author.username}"></span>
+                </div>
+
+                <!-- Nội dung rút gọn -->
+                <div class="post-content"
+                     th:text="${#strings.length(p.content) > 120} ? ${#strings.substring(p.content, 0, 120)} + '...' : ${p.content}">
+                </div>
+
+                <!-- Các nút thao tác -->
+                <div class="post-actions">
+                    <a th:href="@{/posts/{id}(id=${p.id})}" th:text="#{post.view}"></a>
+
+                    <!-- Hiện Edit & Delete nếu là tác giả -->
+                    <span th:if="${#authentication.principal?.username == p.author.username}">
+                | <a th:href="@{/posts/edit/{id}(id=${p.id})}" th:text="#{post.edit}"></a>
+                | <a th:href="@{/posts/delete/{id}(id=${p.id})}"
+                     th:text="#{post.delete}"
+                     onclick="return confirm('Bạn có chắc chắn muốn xóa bài viết này không?');">
+</a>
+
+            </span>
+                </div>
+            </div>
+        </div>
+    </main>
+    <div th:replace="fragments :: footer"></div>
+</div>
+</body>
+</html>

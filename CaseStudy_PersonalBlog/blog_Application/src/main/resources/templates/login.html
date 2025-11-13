@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="#{login.title}">Đăng nhập</title>
+
+    <style>
+        body {
+            font-family: "Segoe UI", Roboto, sans-serif;
+            background: linear-gradient(135deg, #74ABE2, #5563DE);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+        }
+
+        .login-container {
+            background: #fff;
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from {opacity: 0; transform: translateY(-15px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+
+        .error-message {
+            color: #d9534f;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        .success-message {
+            color: #155724;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        label {
+            display: block;
+            text-align: left;
+            font-weight: 600;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #5563DE;
+            box-shadow: 0 0 4px rgba(85, 99, 222, 0.5);
+            outline: none;
+        }
+
+        button {
+            width: 100%;
+            background: #5563DE;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: 600;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #4350c6;
+        }
+
+        .language-select {
+            margin-top: 20px;
+        }
+
+        select {
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: #777;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="login-container">
+    <h1 th:text="#{login.title}">Đăng nhập</h1>
+
+    <!-- ✅ Thông báo lỗi và đăng xuất -->
+    <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div>
+    <div th:if="${logoutMessage}" class="success-message" th:text="${logoutMessage}"></div>
+
+    <!-- Form đăng nhập -->
+    <form th:action="@{/auth/login}" method="post">
+        <label th:text="#{login.username}">Tên đăng nhập:</label>
+        <input type="text" name="username" placeholder="Nhập tên đăng nhập" required>
+
+        <label th:text="#{login.password}">Mật khẩu:</label>
+        <input type="password" name="password" placeholder="Nhập mật khẩu" required>
+
+        <button type="submit" th:text="#{login.button}">Đăng nhập</button>
+    </form>
+
+    <!-- Dropdown chọn ngôn ngữ -->
+    <div class="language-select">
+        <form method="get" th:action="@{/auth/login}">
+            <label th:text="#{login.language}">Ngôn ngữ:</label>
+            <select name="lang" onchange="this.form.submit()">
+                <option value="en" th:selected="${#locale.language == 'en'}">English</option>
+                <option value="vi" th:selected="${#locale.language == 'vi'}">Tiếng Việt</option>
+            </select>
+        </form>
+    </div>
+
+    <p class="footer-text">© 2025 My Blog Application</p>
+</div>
+</body>
+</html>

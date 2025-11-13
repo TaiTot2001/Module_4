@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{home.title}">Personal Blog</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Include header -->
+<div th:replace="fragments :: header"></div>
+
+<!-- Hero Section -->
+<section class="hero">
+    <h2>Chào mừng đến với Blog Cá Nhân</h2>
+    <p>Nơi chia sẻ câu chuyện, bài viết và cảm hứng của bạn</p>
+    <a th:href="@{/posts}">Khám phá bài viết</a>
+</section>
+
+<!-- Content Section -->
+<section class="content">
+    <h3>Viết. Chia sẻ. Truyền cảm hứng.</h3>
+    <p>
+        Hãy đăng ký tài khoản, đăng nhập và bắt đầu chia sẻ góc nhìn của bạn.
+        Blog này là nơi để bạn kết nối, học hỏi và truyền cảm hứng đến mọi người.
+    </p>
+</section>
+
+<!-- Include footer -->
+<div th:replace="fragments :: footer"></div>
+
+</body>
+</html>
